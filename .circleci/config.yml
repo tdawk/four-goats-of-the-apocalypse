@@ -44,7 +44,7 @@ jobs:
 
   mend-circleci-job:
     docker:
-      - image: cimg/base:stable
+      - image: circleci/openjdk:11-node
         user: root
     environment:
       MEND_EMAIL: $API_KEY # Your email address; can be inserted as a CircleCI Project settings environment variable.
@@ -55,8 +55,8 @@ jobs:
       - run:
           name: Print Environment Variables
           command: |
-            echo "MEND_EMAIL=$MEND_EMAIL"
-            echo "MEND_USER_KEY=$MEND_USER_KEY"
+            echo "MEND_EMAIL=$API_KEY"
+            echo "MEND_USER_KEY=$USER_KEY"
             echo "MEND_URL=$MEND_URL"
       - run:
           name: Download Mend CLI
