@@ -57,10 +57,12 @@ jobs:
             echo "MEND_EMAIL=$API_KEY"
             echo "MEND_USER_KEY=$USER_KEY"
             echo "MEND_URL=$MEND_URL"
-            mend auth info
       - run:
           name: Download Mend CLI
           command: curl https://downloads.mend.io/cli/linux_amd64/mend -o /usr/local/bin/mend && chmod +x /usr/local/bin/mend
+      - run:
+          name: mend auth info check
+          command: mend auth info
       - run:
           name: Run Mend CLI SCA Scan
           command: mend dep -u -s "Tara City//test//4goats"
