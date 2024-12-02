@@ -40,13 +40,16 @@ jobs:
       - checkout
       - python/install-packages
   mend-circleci-job:
+      docker:
+      - image: cimg/base:stable
+        user: root
     steps:
       - run:
           name: download mend CLI
           command: curl https://downloads.mend.io/cli/linux_amd64/mend -o /usr/local/bin/mend && chmod +x /usr/local/bin/mend
       - run:
           name: Run Mend CLI SCA Scan
-          command: mend dep -u -s "Tara City//test//4goats" -u # Make sure to add the -s command to set your product and project names.
+          command: mend dep -u -s "Tara City//test//4goats" # Make sure to add the -s command to set your product and project names.
 workflows:
  mend-cli-workflow:
     jobs:
