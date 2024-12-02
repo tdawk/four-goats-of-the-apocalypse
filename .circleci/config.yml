@@ -49,6 +49,7 @@ jobs:
     environment:
       MEND_EMAIL: "$API_KEY" # Your email address; can be inserted as a CircleCI Project settings environment variable.
       MEND_USER_KEY: "$USER_KEY" # Your Mend user key; can be inserted as a CircleCI Project settings environment variable.
+      MEND_ORGANIZATION: "$ORG_KEY"
       MEND_URL: "https://saas-eu.whitesourcesoftware.com" # Make sure to change this to your Mend or WS instance.
     steps:
       - run:
