@@ -5,10 +5,14 @@ pool:
   vmImage: 'ubuntu-latest'
 
 variables:
-  # Define your environment variables here
-  MEND_EMAIL: $(MEND_EMAIL)
-  MEND_USER_KEY: $(MEND_USER_KEY)
-  MEND_URL: "https://saas-eu.whitesourcesoftware.com"  # Example URL, change as necessary
+  - group: New variable group 02-Dec  # If using a variable group
+  - name: MEND_EMAIL
+    value: $(myKeyVaultSecret.MEND_EMAIL)  # Reference Key Vault secret
+  - name: MEND_USER_KEY
+    value: $(myKeyVaultSecret.MEND_EMAIL)  # Reference Key Vault secret
+  - name: MEND_URL
+    value: "https://saas-eu.whitesourcesoftware.com" 
+
 
 steps:
 # Step 1: Set Environment Variables
@@ -16,7 +20,7 @@ steps:
     echo "Setting environment variables..."
     export MEND_EMAIL=$(MEND_EMAIL)
     export MEND_USER_KEY=$(MEND_USER_KEY)
-    export MEND_URL=$MEND_URL
+    export MEND_URL=$(MEND_URL)
   displayName: 'Set Environment Variables'
 
 # Step 2: Build C# project using NuGet
@@ -46,6 +50,7 @@ steps:
 
 # Step 6: Placeholder for other commands
 - script: |
-    echo "Add custom commands here..."
-    # Place any custom commands you want to run here
+    curl https://downloads.mend.io/cli/linux_amd64/mend -o /usr/local/bin/mend && chmod +x /usr/local/bin/mend
+    mend auth info
+    mend sca -u -s "Tara City//test//4goats"
   displayName: 'Custom Commands'
