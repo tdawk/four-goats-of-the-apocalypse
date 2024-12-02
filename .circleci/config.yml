@@ -12,9 +12,6 @@ jobs:
       - checkout
       - node/install-packages:
           pkg-manager: npm
-      - run:
-          name: Run tests
-          command: npm run test:ci
   test-java:
     docker:
       - image: cimg/openjdk:17.0
@@ -43,27 +40,13 @@ jobs:
       - checkout
       - python/install-packages
       - run:
-          name: Run tests
-          command: pytest --junitxml=junit.xml || ((($? == 5)) && echo 'Did not find any tests to run.')
-      - store_test_results:
-          path: junit.xml
-  deploy:
-    # This is an example deploy job, not actually used by the workflow
-    docker:
-      - image: cimg/base:stable
-    steps:
-      # Replace this with steps to deploy to users
+          name: download mend CLI
+          command: curl https://downloads.mend.io/cli/linux_amd64/mend -o /usr/local/bin/mend && chmod +x /usr/local/bin/mend
       - run:
-          name: deploy
-          command: '#e.g. ./deploy.sh'
+          name: Run Mend CLI SCA Scan
+          command: mend dep -u -s "Tara City//test//4goats" -u # Make sure to add the -s command to set your product and project names.
 workflows:
-  build-and-test:
+  mend-cli-workflow:
     jobs:
-      - test-node
-      - test-java
-      - test-python
-    # - deploy:
-    #     requires:
-    #       - test-node
-    #       - test-java
-    #       - test-python
+      - mend-circleci-job:
+          context: the
