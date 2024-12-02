@@ -54,15 +54,15 @@ jobs:
       - run:
           name: Print Environment Variables
           command: |
-            echo "MEND_EMAIL=$MEND_EMAIL"
-            echo "MEND_USER_KEY=$MEND_USER_KEY"
+            echo "MEND_EMAIL=$API_KEY"
+            echo "MEND_USER_KEY=$USER_KEY"
             echo "MEND_URL=$MEND_URL"
       - run:
           name: Download Mend CLI
           command: curl https://downloads.mend.io/cli/linux_amd64/mend -o /usr/local/bin/mend && chmod +x /usr/local/bin/mend
       - run:
           name: Run Mend CLI SCA Scan
-          command: mend dep -u -s "Tara City/test/4goats"
+          command: mend dep -u -s "Tara City//test//4goats"
 
 workflows:
   mend-cli-workflow:
