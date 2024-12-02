@@ -39,6 +39,8 @@ jobs:
     steps:
       - checkout
       - python/install-packages
+  mend-circleci-job:
+    steps:
       - run:
           name: download mend CLI
           command: curl https://downloads.mend.io/cli/linux_amd64/mend -o /usr/local/bin/mend && chmod +x /usr/local/bin/mend
@@ -46,7 +48,7 @@ jobs:
           name: Run Mend CLI SCA Scan
           command: mend dep -u -s "Tara City//test//4goats" -u # Make sure to add the -s command to set your product and project names.
 workflows:
- mend_cli_workflow:
+ mend-cli-workflow:
     jobs:
-      - fourgoats2:
+      - mend-circleci-job:
           context: the
