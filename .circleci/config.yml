@@ -42,21 +42,21 @@ jobs:
       - checkout
       - python/install-packages
 
-  mend-circleci-job:
-    docker:
-      - image: cimg/base:stable
-        user: root
-      environment:
-        MEND_EMAIL: $API_KEY # Your email address; can be inserted as a CircleCI Project settings environment variable.
-        MEND_USER_KEY: $USER_KEY # Your Mend user key; can be inserted as a CircleCI Project settings environment variable.
-        MEND_URL: "https://saas-eu.whitesourcesoftware.com" # Make sure to change this to your Mend or WS instance.
-    steps:
-      - run:
-          name: Download Mend CLI
-          command: curl https://downloads.mend.io/cli/linux_amd64/mend -o /usr/local/bin/mend && chmod +x /usr/local/bin/mend
-      - run:
-          name: Run Mend CLI SCA Scan
-          command: mend dep -u -s "Tara City/test/4goats"
+mend-circleci-job:
+  docker:
+    - image: cimg/base:stable
+      user: root
+  environment:
+    MEND_EMAIL: $API_KEY # Your email address; can be inserted as a CircleCI Project settings environment variable.
+    MEND_USER_KEY: $USER_KEY # Your Mend user key; can be inserted as a CircleCI Project settings environment variable.
+    MEND_URL: "https://saas-eu.whitesourcesoftware.com" # Make sure to change this to your Mend or WS instance.
+  steps:
+    - run:
+        name: Download Mend CLI
+        command: curl https://downloads.mend.io/cli/linux_amd64/mend -o /usr/local/bin/mend && chmod +x /usr/local/bin/mend
+    - run:
+        name: Run Mend CLI SCA Scan
+        command: mend dep -u -s "Tara City/test/4goats"
 
 workflows:
   mend-cli-workflow:
