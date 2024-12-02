@@ -46,15 +46,18 @@ jobs:
     docker:
       - image: circleci/openjdk:11-node
         user: root
-    environment:
-      MEND_EMAIL: $API_KEY # Your email address; can be inserted as a CircleCI Project settings environment variable.
-      MEND_USER_KEY: $USER_KEY # Your Mend user key; can be inserted as a CircleCI Project settings environment variable.
-      MEND_ORGANIZATION: $ORG_KEY
-      MEND_URL: "https://saas-eu.whitesourcesoftware.com" # Make sure to change this to your Mend or WS instance.
+    #environment:
+      #MEND_EMAIL: $API_KEY # Your email address; can be inserted as a CircleCI Project settings environment variable.
+      #MEND_USER_KEY: $USER_KEY # Your Mend user key; can be inserted as a CircleCI Project settings environment variable.
+      # MEND_ORGANIZATION: $ORG_KEY
+      #MEND_URL: "https://saas-eu.whitesourcesoftware.com" # Make sure to change this to your Mend or WS instance.
     steps:
       - run:
           name: Print Environment Variables
           command: |
+            export MEND_EMAIL=$API_KEY
+            export MEND_USER_KEY=$USER_KEY
+            export MEND_URL="https://saas-eu.whitesourcesoftware.com"
             echo "MEND_EMAIL=$API_KEY"
             echo "MEND_USER_KEY=$USER_KEY"
             echo "MEND_URL=$MEND_URL"
