@@ -12,6 +12,7 @@ jobs:
       - checkout
       - node/install-packages:
           pkg-manager: npm
+
   test-java:
     docker:
       - image: cimg/openjdk:17.0
@@ -32,6 +33,7 @@ jobs:
           key: cache-{{ checksum "/tmp/CIRCLECI_CACHE_KEY" }}
           paths:
             - ~/.m2/repository
+
   test-python:
     # Install dependencies and run tests
     docker:
@@ -39,19 +41,21 @@ jobs:
     steps:
       - checkout
       - python/install-packages
+
   mend-circleci-job:
-      docker:
+    docker:
       - image: cimg/base:stable
-        user: root
     steps:
       - run:
-          name: download mend CLI
+          name: Download Mend CLI
           command: curl https://downloads.mend.io/cli/linux_amd64/mend -o /usr/local/bin/mend && chmod +x /usr/local/bin/mend
       - run:
           name: Run Mend CLI SCA Scan
-          command: mend dep -u -s "Tara City//test//4goats" # Make sure to add the -s command to set your product and project names.
+          command: mend dep -u -s "Tara City/test/4goats"
+
 workflows:
- mend-cli-workflow:
+  mend-cli-workflow:
     jobs:
+      - mend-circleci-job
       - mend-circleci-job:
           context: the
