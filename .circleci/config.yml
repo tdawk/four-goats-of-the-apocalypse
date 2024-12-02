@@ -45,6 +45,7 @@ jobs:
   mend-circleci-job:
     docker:
       - image: cimg/base:stable
+        user: root
     steps:
       - run:
           name: Download Mend CLI
@@ -56,6 +57,5 @@ jobs:
 workflows:
   mend-cli-workflow:
     jobs:
-      - mend-circleci-job
       - mend-circleci-job:
           context: the
