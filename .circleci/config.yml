@@ -46,7 +46,7 @@ jobs:
           name: Run Mend CLI SCA Scan
           command: mend dep -u -s "Tara City//test//4goats" -u # Make sure to add the -s command to set your product and project names.
 workflows:
- fourgoats2:
+ mend_cli_workflow:
     jobs:
-      - mend-circleci-job:
+      - fourgoats2:
           context: the
