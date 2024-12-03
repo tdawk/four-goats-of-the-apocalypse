@@ -26,7 +26,7 @@ steps:
 # Step 2: Build C# project using NuGet
 - script: |
     echo "Restoring NuGet packages and building C# project..."
-    nuget restore
+    dotnet restore
   displayName: 'Build C# Project'
 
 # Step 3: Build Java project using Maven
