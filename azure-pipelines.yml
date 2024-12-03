@@ -49,7 +49,6 @@ steps:
 
 # Step 6: Placeholder for other commands
 - script: |
-    curl https://downloads.mend.io/cli/linux_amd64/mend -o /usr/local/bin/mend && chmod +x /usr/local/bin/mend
     mend auth info
     mend sca -u -s "Tara City//test//4goats"
   displayName: 'Custom Commands'
