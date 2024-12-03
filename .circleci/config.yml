@@ -67,9 +67,7 @@ jobs:
             echo "MEND_EMAIL=$API_KEY"
             echo "MEND_USER_KEY=$USER_KEY"
             echo "MEND_URL=$MEND_URL"
-      - run:
-          name: mend auth info check
-          command: mend auth info
+            mend auth info
       - run:
           name: Run Mend CLI SCA Scan
           command: mend dep -u -s "Tara City//test//4goats"
