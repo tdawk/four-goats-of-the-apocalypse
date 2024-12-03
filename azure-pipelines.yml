@@ -57,4 +57,5 @@ steps:
     MEND_USER_KEY: $(MEND_USER_KEY)
     MEND_EMAIL: $(MEND_EMAIL)
     MEND_URL: "https://saas-eu.whitesourcesoftware.com"
+    MEND_ORGANIZATION: $(ORG_KEY)
   displayName: 'Custom Commands'
