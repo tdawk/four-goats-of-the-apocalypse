@@ -18,7 +18,7 @@ steps:
 - script: |
     echo "Restoring NuGet packages and building C# project..."
     export NUGET_PACKAGES=./custom_packages
-    dotnet restore
+    msbuild /t:Restore WebGoat.NET.csproj
   displayName: 'Build C# Project'
 
 # Step 3: Build Java project using Maven
