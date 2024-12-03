@@ -9,9 +9,11 @@ variables:
   - name: MEND_EMAIL
     value: $(myKeyVaultSecret.MEND_EMAIL)  # Reference Key Vault secret
   - name: MEND_USER_KEY
-    value: $(myKeyVaultSecret.MEND_EMAIL)  # Reference Key Vault secret
+    value: $(myKeyVaultSecret.MEND_USER_KEY)  # Reference Key Vault secret
   - name: MEND_URL
     value: "https://saas-eu.whitesourcesoftware.com" 
+  - name: MEND_ORGANIZATION
+    value: $(myKeyVaultSecret.MEND_ORG)
 
 
 steps:
