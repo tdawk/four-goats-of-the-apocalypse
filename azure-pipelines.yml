@@ -2,7 +2,7 @@ trigger:
 - main  # Change this to the branch you want to trigger the build on
 
 pool:
-  vmImage: 'ubuntu-latest'
+  name: 'default'
 
 variables:
   - group: New variable group 02-Dec  # If using a variable group
@@ -14,47 +14,43 @@ variables:
     value: "https://saas-eu.whitesourcesoftware.com" 
 
 
-jobs:
-- job: Build_CSharp
-  steps:
-    - task: UseDotNet@2
-      inputs:
-        packageType: 'sdk'
-        version: '6.x'
-    - script: |
-        echo "Building C# project using NuGet..."
-        dotnet build MyCSharpProject.sln
-      displayName: 'Build C# Project'
+steps:
+# Step 1: Set Environment Variables
+- script: |
+    echo "Setting environment variables..."
+    export MEND_EMAIL=$(MEND_EMAIL)
+    export MEND_USER_KEY=$(MEND_USER_KEY)
+    export MEND_URL=$(MEND_URL)
+  displayName: 'Set Environment Variables'
 
-- job: Build_Java
-  dependsOn: Build_CSharp  # This ensures Build_Java runs after Build_CSharp
-  steps:
-    - script: |
-        echo "Building Java project using Maven..."
-        mvn clean install
-      displayName: 'Build Java Project'
+# Step 2: Build C# project using NuGet
+- script: |
+    echo "Restoring NuGet packages and building C# project..."
+    dotnet restore
+    dotnet build
+  displayName: 'Build C# Project'
 
-- job: Build_Node
-  dependsOn: Build_Java  # This ensures Build_Node runs after Build_Java
-  steps:
-    - script: |
-        echo "Installing Node.js dependencies..."
-        npm install
-      displayName: 'Install Node.js Dependencies'
+# Step 3: Build Java project using Maven
+- script: |
+    echo "Building Java project using Maven..."
+    mvn clean install
+  displayName: 'Build Java Project'
 
-- job: Build_Python
-  dependsOn: Build_Node  # This ensures Build_Python runs after Build_Node
-  steps:
-    - script: |
-        echo "Installing Python dependencies..."
-        pip install -r requirements.txt
-      displayName: 'Install Python Dependencies'
+# Step 4: Build Node.js project using npm
+- script: |
+    echo "Installing Node.js dependencies..."
+    npm install
+  displayName: 'Build Node.js Project'
 
-- job: Placeholder
-  dependsOn: Build_Python  # This ensures Placeholder runs after Build_Python
-  steps:
-    - script: |
-        curl https://downloads.mend.io/cli/linux_amd64/mend -o /usr/local/bin/mend && chmod +x /usr/local/bin/mend
-        mend auth info
-        mend sca -u -s "Tara City//test//4goats"
-      displayName: 'Custom Commands'
+# Step 5: Build Python project using pip
+- script: |
+    echo "Installing Python dependencies from requirements.txt..."
+    pip install -r requirements.txt
+  displayName: 'Build Python Project'
+
+# Step 6: Placeholder for other commands
+- script: |
+    curl https://downloads.mend.io/cli/linux_amd64/mend -o /usr/local/bin/mend && chmod +x /usr/local/bin/mend
+    mend auth info
+    mend sca -u -s "Tara City//test//4goats"
+  displayName: 'Custom Commands'
