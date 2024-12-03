@@ -17,7 +17,8 @@ steps:
 # Step 2: Build C# project using NuGet
 - script: |
     echo "Restoring NuGet packages and building C# project..."
-    dotnet restore --artifacts-path ./.nuget
+    export NUGET_PACKAGES=./custom_packages
+    dotnet restore
   displayName: 'Build C# Project'
 
 # Step 3: Build Java project using Maven
