@@ -49,3 +49,11 @@ steps:
     MEND_ORGANIZATION: $(ORG_KEY)
     MEND_LOG_LEVEL: DEBUG
   displayName: 'Custom Commands'
+
+# Step 7: Publish Mend SCA Logs as Artifacts
+- task: PublishBuildArtifacts@1
+  inputs:
+    PathtoPublish: '/home/agent/.mend/logs/sca/'
+    ArtifactName: 'MendSCA_Logs'
+    publishLocation: 'Container'
+  displayName: 'Upload Mend SCA Logs as Artifact'
