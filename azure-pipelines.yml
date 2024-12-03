@@ -41,7 +41,7 @@ steps:
 # Step 6: Placeholder for other commands
 - script: |
     mend auth info
-    mend sca -u -s "Tara City//test//4goats"
+    mend sca -u -s "test//4goats"
   env: 
     MEND_USER_KEY: $(MEND_USER_KEY)
     MEND_EMAIL: $(MEND_EMAIL)
