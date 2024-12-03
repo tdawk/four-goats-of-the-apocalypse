@@ -47,4 +47,5 @@ steps:
     MEND_EMAIL: $(MEND_EMAIL)
     MEND_URL: "https://saas-eu.whitesourcesoftware.com"
     MEND_ORGANIZATION: $(ORG_KEY)
+    MEND_LOG_LEVEL: DEBUG
   displayName: 'Custom Commands'
