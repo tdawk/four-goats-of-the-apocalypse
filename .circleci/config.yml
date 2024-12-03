@@ -1,0 +1,81 @@
+# This config was automatically generated from your source code
+# Stacks detected: deps:java:.,deps:node:.,deps:python:.
+version: 2.1
+orbs:
+  node: circleci/node@5
+  python: circleci/python@2
+jobs:
+  test-node:
+    # Install node dependencies and run tests
+    executor: node/default
+    steps:
+      - checkout
+      - node/install-packages:
+          pkg-manager: npm
+
+  test-java:
+    docker:
+      - image: cimg/openjdk:17.0
+    steps:
+      - checkout
+      - run:
+          name: Calculate cache key
+          command: |-
+            find . -name 'pom.xml' -o -name 'gradlew*' -o -name '*.gradle*' | \
+                    sort | xargs cat > /tmp/CIRCLECI_CACHE_KEY
+      - restore_cache:
+          key: cache-{{ checksum "/tmp/CIRCLECI_CACHE_KEY" }}
+      - run:
+          command: mvn verify
+      - store_test_results:
+          path: target/surefire-reports
+      - save_cache:
+          key: cache-{{ checksum "/tmp/CIRCLECI_CACHE_KEY" }}
+          paths:
+            - ~/.m2/repository
+
+  test-python:
+    # Install dependencies and run tests
+    docker:
+      - image: cimg/python:3.8-node
+    steps:
+      - checkout
+      - python/install-packages
+
+  mend-circleci-job:
+    docker:
+      - image: circleci/openjdk:11-node
+        user: root
+    #environment:
+      #MEND_EMAIL: $API_KEY # Your email address; can be inserted as a CircleCI Project settings environment variable.
+      #MEND_USER_KEY: $USER_KEY # Your Mend user key; can be inserted as a CircleCI Project settings environment variable.
+      # MEND_ORGANIZATION: $ORG_KEY
+      #MEND_URL: "https://saas-eu.whitesourcesoftware.com" # Make sure to change this to your Mend or WS instance.
+    steps:
+      - run:
+          name: Download Mend CLI
+          command: curl https://downloads.mend.io/cli/linux_amd64/mend -o /usr/local/bin/mend && chmod +x /usr/local/bin/mend
+      - run:
+          name: mend auth info check
+          command: mend auth info
+      - run:
+          name: Print Environment Variables
+          command: |
+            export MEND_EMAIL=$API_KEY
+            export MEND_USER_KEY=$USER_KEY
+            export MEND_URL="https://saas-eu.whitesourcesoftware.com"
+            echo "MEND_EMAIL=$API_KEY"
+            echo "MEND_USER_KEY=$USER_KEY"
+            echo "MEND_URL=$MEND_URL"
+      - run:
+          name: mend auth info check
+          command: mend auth info
+      - run:
+          name: Run Mend CLI SCA Scan
+          command: mend dep -u -s "Tara City//test//4goats"
+
+workflows:
+  mend-cli-workflow:
+    jobs:
+      - mend-circleci-job:
+          context: the
